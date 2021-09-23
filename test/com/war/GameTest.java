@@ -1,5 +1,6 @@
 package com.war;
 
+import com.war.Exceptions.SelfAttackException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

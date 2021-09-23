@@ -1,12 +1,14 @@
 package com.war;
 
+import com.war.Exceptions.SelfAttackException;
+
 public abstract class Hero {
 
     protected int health;
     protected int attack;
 
     public boolean isAlive(){
-        return this.health >= 0;
+        return this.health > 0;
     }
 
     public int getHealth() {
@@ -23,5 +25,14 @@ public abstract class Hero {
 
     public void setAttack(int attack) {
         this.attack = attack;
+    }
+
+    public int doAttack(Hero enemy) throws SelfAttackException {
+
+        if(enemy == this) throw new SelfAttackException("You can't attack yourself");
+
+        enemy.setHealth(enemy.getHealth() - this.getAttack());
+
+        return enemy.getHealth();
     }
 }

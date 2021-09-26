@@ -1,6 +1,6 @@
-package com.war;
+package com.war.heroes;
 
-public class Warrior extends Hero{
+public class Warrior extends Hero {
 
     public Warrior() {
         health = 50;

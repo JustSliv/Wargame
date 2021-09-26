@@ -1,4 +1,4 @@
-package com.war.Exceptions;
+package com.war.exceptions;
 
 public class SelfAttackException extends Exception{
 

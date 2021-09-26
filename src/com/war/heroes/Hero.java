@@ -1,6 +1,6 @@
-package com.war;
+package com.war.heroes;
 
-import com.war.Exceptions.SelfAttackException;
+import com.war.exceptions.SelfAttackException;
 
 public abstract class Hero {
 

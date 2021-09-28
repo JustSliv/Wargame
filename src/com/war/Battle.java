@@ -1,7 +1,6 @@
 package com.war;
 
 import com.war.exceptions.SelfAttackException;
-import com.war.fabryc.HeroTypes;
 import com.war.heroes.Hero;
 
 public class Battle {
@@ -50,13 +49,4 @@ public class Battle {
         return army1.hasAliveFighters();
     }
 
-    public static void main(String[] args) {
-        Army army1 = new Army();
-        Army army2 = new Army();
-
-        army1.addUnits(HeroTypes.WARRIOR, 5);
-        army2.addUnits(HeroTypes.WARRIOR, 5);
-
-        System.out.println(fight(army1, army2));
-    }
 }

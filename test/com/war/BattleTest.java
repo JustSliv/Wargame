@@ -1,13 +1,13 @@
 package com.war;
 
+import com.war.exceptions.OverHealException;
+import com.war.exceptions.SelfAttackException;
 import com.war.fabryc.HeroTypes;
-import com.war.heroes.Hero;
-import com.war.heroes.Knight;
-import com.war.heroes.Warrior;
+import com.war.heroes.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class BattleTest {
 
@@ -53,6 +53,39 @@ class BattleTest {
         var result = Battle.fight(knight1, knight2);
 
         assertEquals(result, true);
+    }
+
+    @Test
+    @DisplayName("Test defence mechanic, Warrior attack Defender assume Warrior attack = 3")
+    void fight5() throws SelfAttackException {
+        Hero warrior = new Warrior();
+        Hero defender = new Defender();
+
+        var result = warrior.doAttack(defender);
+
+        assertEquals(result, 3);
+    }
+
+    @Test
+    @DisplayName("Test defence mechanic, Knight attack Defender assume Knight attack = 5")
+    void fight6() throws SelfAttackException {
+        Hero knight = new Knight();
+        Hero defender = new Defender();
+
+        var result = knight.doAttack(defender);
+
+        assertEquals(result, 5);
+    }
+
+    @Test
+    @DisplayName("Test defence mechanic, Defender attack Defender assume second hero attack = 1")
+    void fight7() throws SelfAttackException {
+        Hero defender1 = new Defender();
+        Hero defender2 = new Defender();
+
+        var result = defender1.doAttack(defender2);
+
+        assertEquals(result, 1);
     }
 
     @Test
@@ -156,6 +189,41 @@ class BattleTest {
 
 
         var result = Battle.fight(army1, army2);
+
+        assertEquals(result, true);
+    }
+
+    @Test
+    @DisplayName("Vampirism not on full health")
+    void vampirismTest() throws SelfAttackException, OverHealException {
+        Hero vampire = new Vampire();
+        Hero warrior = new Warrior();
+
+        warrior.doAttack(vampire);
+
+        var result = vampire.healWithVampirism(4);
+
+        assertEquals(result, 2);
+    }
+
+    @Test
+    @DisplayName("Vampirism on full health")
+    void vampirismTest2() throws OverHealException {
+        Hero vampire = new Vampire();
+        Hero warrior = new Warrior();
+
+        var result = vampire.healWithVampirism(4);
+
+        assertEquals(result, 0);
+    }
+
+    @Test
+    @DisplayName("Vampire vs warrior assume first win")
+    void vampireFight() {
+        Hero vampire = new Vampire();
+        Hero warrior = new Warrior();
+
+        var result = (Battle.fight(vampire, warrior));
 
         assertEquals(result, true);
     }

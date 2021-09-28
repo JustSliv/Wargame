@@ -2,5 +2,7 @@ package com.war.fabryc;
 
 public enum HeroTypes {
     WARRIOR,
-    KNIGHT
+    KNIGHT,
+    DEFENDER,
+    VAMPIRE
 }

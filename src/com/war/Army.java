@@ -22,7 +22,7 @@ public class Army {
     }
 
     public boolean isEmpty() {
-        return size() > 0;
+        return size() <= 0;
     }
 
     public Hero getHero(int id) {
@@ -38,7 +38,13 @@ public class Army {
     }
 
     public boolean hasAliveFighters() {
-        return isEmpty();
+        for(int i = 0; i < size(); i++) {
+            if(!getHero(i).isAlive()){
+                ((LinkedList<Hero>)heroes).remove(i);
+                i--;
+            }
+        }
+        return !isEmpty();
     }
 
     public Hero peekHero() {

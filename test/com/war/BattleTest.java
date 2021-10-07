@@ -230,7 +230,7 @@ class BattleTest {
     @Test
     @DisplayName("Army 1(7 lancer, 3 vampire, 4 warrior, 2 defender) " +
             "vs army 2 (4 warrior, 4 defender, 6 vampire, 4 lancer) assume win army 1")
-    void armyFight8() throws SelfAttackException {
+    void armyFight8() {
         Army army1 = new Army();
         Army army2 = new Army();
 
@@ -600,6 +600,122 @@ class BattleTest {
 
 
         var result = Battle.fight(army1, army2);
+
+        assertEquals(result, true);
+    }
+
+    @Test
+    @DisplayName("Straight fight army1(5 Lancer, 3 Vampire, 4 Warrior, 2 Defender vs army2(4 Warrior, 4 Defender, 6 Vampire, 5 Lancer)")
+    void straightFight1(){
+        Army army1 = new Army();
+        Army army2 = new Army();
+
+        army1.addUnits(HeroTypes.LANCER, 5);
+        army1.addUnits(HeroTypes.VAMPIRE, 3);
+        army1.addUnits(HeroTypes.WARRIOR, 4);
+        army1.addUnits(HeroTypes.DEFENDER, 2);
+
+        army2.addUnits(HeroTypes.WARRIOR, 4);
+        army2.addUnits(HeroTypes.DEFENDER, 4);
+        army2.addUnits(HeroTypes.VAMPIRE, 6);
+        army2.addUnits(HeroTypes.LANCER, 5);
+
+        var result = Battle.straightFight(army1, army2);
+
+        assertEquals(result, false);
+    }
+    @Test
+    @DisplayName("Straight fight army1(7 Lancer, 3 Vampire, 4 Warrior, 2 Defender vs army2(4 Warrior, 4 Defender, 6 Vampire, 4 Lancer)")
+    void straightFight2(){
+        Army army1 = new Army();
+        Army army2 = new Army();
+
+        army1.addUnits(HeroTypes.LANCER, 7);
+        army1.addUnits(HeroTypes.VAMPIRE, 3);
+        army1.addUnits(HeroTypes.WARRIOR, 4);
+        army1.addUnits(HeroTypes.DEFENDER, 2);
+
+        army2.addUnits(HeroTypes.WARRIOR, 4);
+        army2.addUnits(HeroTypes.DEFENDER, 4);
+        army2.addUnits(HeroTypes.VAMPIRE, 6);
+        army2.addUnits(HeroTypes.LANCER, 4);
+
+        var result = Battle.straightFight(army1, army2);
+
+        assertEquals(result, true);
+    }
+
+    @Test
+    @DisplayName("Straight fight army1(7 Lancer, 3 Vampire, 1 Healer, 4 Warrior, 1 Healer, 2 Defender " +
+            "vs army2(4 Warrior, 4 Defender,1 Healer, 6 Vampire, 4 Lancer)")
+    void straightFight3(){
+        Army army1 = new Army();
+        Army army2 = new Army();
+
+        army1.addUnits(HeroTypes.LANCER, 7);
+        army1.addUnits(HeroTypes.VAMPIRE, 3);
+        army1.addUnits(HeroTypes.HEALER, 1);
+        army1.addUnits(HeroTypes.WARRIOR, 4);
+        army1.addUnits(HeroTypes.HEALER, 1);
+        army1.addUnits(HeroTypes.DEFENDER, 2);
+
+        army2.addUnits(HeroTypes.WARRIOR, 4);
+        army2.addUnits(HeroTypes.DEFENDER, 4);
+        army2.addUnits(HeroTypes.HEALER, 1);
+        army2.addUnits(HeroTypes.VAMPIRE, 6);
+        army2.addUnits(HeroTypes.LANCER, 4);
+
+        var result = Battle.straightFight(army1, army2);
+
+        assertEquals(result, false);
+    }
+
+    @Test
+    @DisplayName("Straight fight army1(7 Lancer, 3 Vampire, 1 Healer, 4 Warrior, 1 Healer, 2 Defender " +
+            "vs army2(4 Warrior, 4 Defender,1 Healer, 6 Vampire, 4 Lancer)")
+    void straightFight4(){
+        Army army1 = new Army();
+        Army army2 = new Army();
+
+        army1.addUnits(HeroTypes.LANCER, 7);
+        army1.addUnits(HeroTypes.VAMPIRE, 3);
+        army1.addUnits(HeroTypes.HEALER, 1);
+        army1.addUnits(HeroTypes.WARRIOR, 4);
+        army1.addUnits(HeroTypes.HEALER, 1);
+        army1.addUnits(HeroTypes.DEFENDER, 2);
+
+        army2.addUnits(HeroTypes.WARRIOR, 4);
+        army2.addUnits(HeroTypes.DEFENDER, 4);
+        army2.addUnits(HeroTypes.HEALER, 1);
+        army2.addUnits(HeroTypes.VAMPIRE, 6);
+        army2.addUnits(HeroTypes.LANCER, 4);
+
+        var result = Battle.straightFight(army1, army2);
+
+        assertEquals(result, false);
+    }
+
+    @Test
+    @DisplayName("Straight fight army1(7 Lancer, 3 Vampire, 1 Healer, 4 Warrior, 1 Healer, 2 Defender " +
+            "vs army2(4 Warrior, 4 Defender,1 Healer, 6 Vampire, 4 Lancer)")
+    void straightFight5(){
+        Army army1 = new Army();
+        Army army2 = new Army();
+
+        army1.addUnits(HeroTypes.LANCER, 4);
+        army1.addUnits(HeroTypes.WARRIOR, 3);
+        army1.addUnits(HeroTypes.HEALER, 1);
+        army1.addUnits(HeroTypes.WARRIOR, 4);
+        army1.addUnits(HeroTypes.HEALER, 1);
+        army1.addUnits(HeroTypes.KNIGHT, 2);
+
+        army2.addUnits(HeroTypes.WARRIOR, 4);
+        army2.addUnits(HeroTypes.DEFENDER, 4);
+        army2.addUnits(HeroTypes.HEALER, 1);
+        army2.addUnits(HeroTypes.VAMPIRE, 2);
+        army2.addUnits(HeroTypes.LANCER, 4);
+
+        var result = Battle.straightFight(army1, army2);
 
         assertEquals(result, true);
     }

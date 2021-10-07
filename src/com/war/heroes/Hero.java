@@ -17,7 +17,7 @@ public abstract class Hero {
     public boolean isAlive() {
         if(this.health > 0){
             isAlive = true;
-        }else{
+        }else if(this.health <= 0 || !this.isAlive){
             isAlive = false;
         }
         return isAlive;
@@ -61,7 +61,9 @@ public abstract class Hero {
         int finalAttack = 0;
 //        if (enemy == this) throw new SelfAttackException("You can't attack yourself");
 
-        finalAttack = (this.getAttack() - enemy.getDefence());
+        if(attack > 0){
+            finalAttack = (this.getAttack() - enemy.getDefence());
+        }
 
         enemy.setHealth(enemy.getHealth() - finalAttack);
 

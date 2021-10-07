@@ -11,7 +11,7 @@ public class Lancer extends Warrior implements MultiAttacker {
 
     @Override
     public void doAttack(Army army) {
-            if (army.isEmpty()) {
+            if (!army.isEmpty()) {
                 doAttack(army.getHero(0));
                 if (army.size() > 1) {
                     doPierceAttack(army.getHero(1));

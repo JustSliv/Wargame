@@ -8,4 +8,14 @@ public class Defender extends Warrior{
         this.attack = 3;
         this.defence = 2;
     }
+
+    @Override
+    public String toString() {
+        return "Defender{" +
+                "health=" + health +
+                ", attack=" + attack +
+                ", defence=" + defence +
+                ", maxHealth=" + maxHealth +
+                '}';
+    }
 }

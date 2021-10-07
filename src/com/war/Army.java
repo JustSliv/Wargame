@@ -4,19 +4,11 @@ import com.war.fabryc.HeroFactory;
 import com.war.fabryc.HeroTypes;
 import com.war.heroes.Hero;
 
-import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.LinkedList;
 
 public class Army {
-    private Deque<Hero> heroes = new ArrayDeque<Hero>();
-
-    public Deque<Hero> getHeroes() {
-        return heroes;
-    }
-
-    public void setHeroes(Deque<Hero> heroes) {
-        this.heroes = heroes;
-    }
+    private Deque<Hero> heroes = new LinkedList<>();
 
     public void addUnits(HeroTypes type, int number) {
         HeroFactory factory = new HeroFactory();
@@ -25,7 +17,36 @@ public class Army {
         }
     }
 
-    public boolean hasAliveFighters() {
-        return this.heroes.size() > 0;
+    public int size() {
+        return this.heroes.size();
     }
+
+    public boolean isEmpty() {
+        return size() > 0;
+    }
+
+    public Hero getHero(int id) {
+        return ((LinkedList<Hero>) heroes).get(id);
+    }
+
+    public int getPositionOfCurrentHero() {
+        return ((LinkedList<Hero>) heroes).indexOf(this.peekHero());
+    }
+
+    public Hero getHealer() {
+        return getHero(getPositionOfCurrentHero() + 1);
+    }
+
+    public boolean hasAliveFighters() {
+        return isEmpty();
+    }
+
+    public Hero peekHero() {
+        return this.heroes.peek();
+    }
+
+    public Hero pollHero() {
+        return this.heroes.poll();
+    }
+
 }

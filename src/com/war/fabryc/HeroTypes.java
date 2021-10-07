@@ -4,5 +4,7 @@ public enum HeroTypes {
     WARRIOR,
     KNIGHT,
     DEFENDER,
-    VAMPIRE
+    VAMPIRE,
+    LANCER,
+    HEALER
 }

@@ -1,18 +1,31 @@
 package com.war.heroes;
 
-import com.war.exceptions.OverHealException;
-import com.war.exceptions.SelfAttackException;
+import com.war.weapons.Weapon;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Hero {
 
     protected int health;
     protected int attack;
     protected int defence;
-    protected int vampirism;
     protected int maxHealth;
+    protected boolean isAlive = true;
+    private List<Weapon> weapons = new ArrayList<>();
 
     public boolean isAlive() {
-        return this.health > 0;
+        if(this.health > 0){
+            isAlive = true;
+        }else{
+            isAlive = false;
+        }
+        return isAlive;
+    }
+
+    public void setAlive(boolean alive) {
+        isAlive = alive;
+        health = 0;
     }
 
     public int getHealth() {
@@ -35,56 +48,61 @@ public abstract class Hero {
         return defence;
     }
 
-    public void setDefence(int defence) {
-        this.defence = defence;
-    }
-
-    public int getVampirism() {
-        return vampirism;
-    }
-
-    public void setVampirism(int vampirism) {
-        this.vampirism = vampirism;
-    }
-
     public int getMaxHealth() {
         return maxHealth;
     }
 
-    public void setMaxHealth(int maxHealth) {
-        this.maxHealth = maxHealth;
+    public List<Weapon> getWeapons() {
+        return weapons;
     }
 
-    public int doAttack(Hero enemy) throws SelfAttackException {
+
+    public int doAttack(Hero enemy) {
         int finalAttack = 0;
-        if (enemy == this) throw new SelfAttackException("You can't attack yourself");
+//        if (enemy == this) throw new SelfAttackException("You can't attack yourself");
 
         finalAttack = (this.getAttack() - enemy.getDefence());
-        enemy.setHealth(enemy.getHealth() - finalAttack);
 
-        healWithVampirism(finalAttack);
+        enemy.setHealth(enemy.getHealth() - finalAttack);
 
         return finalAttack;
     }
 
-    public int healWithVampirism(int attack) {
-        int healResult = Math.round(((float) attack * vampirism) / 100);
-
-        try {
-            heal(healResult);
-        } catch (OverHealException exception) {
-            System.out.println(exception.getMessage());
-            return 0;
-        }
-
-        return healResult;
+    public void addWeapon(Weapon weapon) {
+        weapons.add(weapon);
+        applyWeapon(weapon);
     }
 
-    public void heal(int heal) throws OverHealException {
-        if (this.getHealth() + heal > this.getMaxHealth())
-            throw new OverHealException("You can't heal over your health");
+    public int addHealth(int health) {
+        this.maxHealth = getMaxHealth() + health;
+        this.health =this.maxHealth;
 
-        this.setHealth(this.getHealth() + heal);
+        return getMaxHealth();
+    }
+
+    public int addAttack(int attack) {
+        this.attack = getAttack() + attack;
+        return getAttack();
+    }
+
+    public int addDefence(int defence) {
+        this.defence = (getDefence() + defence);
+        return getDefence();
+    }
+
+    protected void applyWeapon(Weapon weapon) {
+        if (this.maxHealth > 0) {
+            addHealth(weapon.getHealth());
+        }else{
+            this.attack = 0;
+            this.isAlive = false;
+        }
+        if (this.attack > 0) {
+            addAttack(weapon.getAttack());
+        }
+        if (this.defence > 0) {
+            addDefence(weapon.getDefense());
+        }
     }
 
 }

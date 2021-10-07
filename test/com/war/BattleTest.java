@@ -1,9 +1,9 @@
 package com.war;
 
-import com.war.exceptions.OverHealException;
 import com.war.exceptions.SelfAttackException;
 import com.war.fabryc.HeroTypes;
 import com.war.heroes.*;
+import com.war.weapons.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -89,8 +89,30 @@ class BattleTest {
     }
 
     @Test
+    @DisplayName("fight warrior vs lancer assume second win")
+    void fight8() {
+        Hero warrior = new Warrior();
+        Hero lancer = new Lancer();
+
+        var result = Battle.fight(warrior, lancer);
+
+        assertEquals(result, false);
+    }
+
+    @Test
+    @DisplayName("fight healer vs healer assume second win")
+    void fight9() {
+        Hero hero1 = new Healer();
+        Hero hero2 = new Healer();
+
+        var result = Battle.fight(hero1, hero2);
+
+        assertEquals(result, false);
+    }
+
+    @Test
     @DisplayName("20 warriors vs 5 warriors assume first army win")
-    void armyFight1() {
+    void armyFight1() throws SelfAttackException {
         Army army1 = new Army();
         Army army2 = new Army();
 
@@ -105,7 +127,7 @@ class BattleTest {
 
     @Test
     @DisplayName("5 warriors vs 5 warriors assume first army win")
-    void armyFight2() {
+    void armyFight2() throws SelfAttackException {
         Army army1 = new Army();
         Army army2 = new Army();
 
@@ -120,7 +142,7 @@ class BattleTest {
 
     @Test
     @DisplayName("5 warriors vs 20 warriors assume second army win")
-    void armyFight3() {
+    void armyFight3() throws SelfAttackException {
         Army army1 = new Army();
         Army army2 = new Army();
 
@@ -135,7 +157,7 @@ class BattleTest {
 
     @Test
     @DisplayName("5 warriors vs 7 warriors assume second army win")
-    void armyFight4() {
+    void armyFight4() throws SelfAttackException {
         Army army1 = new Army();
         Army army2 = new Army();
 
@@ -150,7 +172,7 @@ class BattleTest {
 
     @Test
     @DisplayName("20 warriors vs 21 warriors assume second army win")
-    void armyFight5() {
+    void armyFight5() throws SelfAttackException {
         Army army1 = new Army();
         Army army2 = new Army();
 
@@ -165,7 +187,7 @@ class BattleTest {
 
     @Test
     @DisplayName("10 warriors vs 11 warriors assume second army win")
-    void armyFight6() {
+    void armyFight6() throws SelfAttackException {
         Army army1 = new Army();
         Army army2 = new Army();
 
@@ -180,7 +202,7 @@ class BattleTest {
 
     @Test
     @DisplayName("11 warriors vs 7 warriors assume first army win")
-    void armyFight7() {
+    void armyFight7() throws SelfAttackException {
         Army army1 = new Army();
         Army army2 = new Army();
 
@@ -194,30 +216,6 @@ class BattleTest {
     }
 
     @Test
-    @DisplayName("Vampirism not on full health")
-    void vampirismTest() throws SelfAttackException, OverHealException {
-        Hero vampire = new Vampire();
-        Hero warrior = new Warrior();
-
-        warrior.doAttack(vampire);
-
-        var result = vampire.healWithVampirism(4);
-
-        assertEquals(result, 2);
-    }
-
-    @Test
-    @DisplayName("Vampirism on full health")
-    void vampirismTest2() throws OverHealException {
-        Hero vampire = new Vampire();
-        Hero warrior = new Warrior();
-
-        var result = vampire.healWithVampirism(4);
-
-        assertEquals(result, 0);
-    }
-
-    @Test
     @DisplayName("Vampire vs warrior assume first win")
     void vampireFight() {
         Hero vampire = new Vampire();
@@ -227,4 +225,384 @@ class BattleTest {
 
         assertEquals(result, true);
     }
+
+
+    @Test
+    @DisplayName("Army 1(7 lancer, 3 vampire, 4 warrior, 2 defender) " +
+            "vs army 2 (4 warrior, 4 defender, 6 vampire, 4 lancer) assume win army 1")
+    void armyFight8() throws SelfAttackException {
+        Army army1 = new Army();
+        Army army2 = new Army();
+
+        army1.addUnits(HeroTypes.LANCER, 7);
+        army1.addUnits(HeroTypes.VAMPIRE, 3);
+        army1.addUnits(HeroTypes.WARRIOR, 4);
+        army1.addUnits(HeroTypes.DEFENDER, 2);
+
+        army2.addUnits(HeroTypes.WARRIOR, 4);
+        army2.addUnits(HeroTypes.DEFENDER, 4);
+        army2.addUnits(HeroTypes.VAMPIRE, 6);
+        army2.addUnits(HeroTypes.LANCER, 4);
+
+
+        var result = Battle.fight(army1, army2);
+
+        assertEquals(result, true);
+    }
+
+    @Test
+    @DisplayName("Army 1(3 vampires, 8 warriors, 9 defenders) " +
+            "vs army 2 (4 warriors, 4 defenders, 13 vampires) assume win army 1")
+    void armyFight9() throws SelfAttackException {
+        Army army1 = new Army();
+        Army army2 = new Army();
+
+        army1.addUnits(HeroTypes.VAMPIRE, 3);
+        army1.addUnits(HeroTypes.WARRIOR, 8);
+        army1.addUnits(HeroTypes.DEFENDER, 9);
+
+        army2.addUnits(HeroTypes.WARRIOR, 4);
+        army2.addUnits(HeroTypes.DEFENDER, 4);
+        army2.addUnits(HeroTypes.VAMPIRE, 13);
+
+
+        var result = Battle.fight(army1, army2);
+
+        assertEquals(result, true);
+    }
+
+    @Test
+    @DisplayName("Army 1(3 vampires, 4 warriors, 2 defenders) " +
+            "vs army 2 (4 warriors, 4 defenders, 3 vampires) assume win army 2")
+    void armyFight10() throws SelfAttackException {
+        Army army1 = new Army();
+        Army army2 = new Army();
+
+
+        army1.addUnits(HeroTypes.VAMPIRE, 3);
+        army1.addUnits(HeroTypes.WARRIOR, 4);
+        army1.addUnits(HeroTypes.DEFENDER, 2);
+
+        army2.addUnits(HeroTypes.WARRIOR, 4);
+        army2.addUnits(HeroTypes.DEFENDER, 4);
+        army2.addUnits(HeroTypes.VAMPIRE, 3);
+
+
+        var result = Battle.fight(army1, army2);
+
+        assertEquals(result, false);
+    }
+
+    @Test
+    @DisplayName("Army 1(5 lancer, 3 vampire, 4 warrior, 2 defender) " +
+            "vs army 2 (4 warrior, 4 defender, 6 vampire, 5 lancer) assume win army 2")
+    void armyFight11() {
+        Army army1 = new Army();
+        Army army2 = new Army();
+
+        army1.addUnits(HeroTypes.LANCER, 5);
+        army1.addUnits(HeroTypes.VAMPIRE, 3);
+        army1.addUnits(HeroTypes.WARRIOR, 4);
+        army1.addUnits(HeroTypes.DEFENDER, 2);
+
+        army2.addUnits(HeroTypes.WARRIOR, 4);
+        army2.addUnits(HeroTypes.DEFENDER, 4);
+        army2.addUnits(HeroTypes.VAMPIRE, 6);
+        army2.addUnits(HeroTypes.LANCER, 5);
+
+
+        var result = Battle.fight(army1, army2);
+
+        assertEquals(result, false);
+    }
+
+    @Test
+    @DisplayName("Army 1(7 lancer, 3 vampire, 1 healer, 4 warrior, 1 healer, 6 vampire, 2 defender) " +
+            "vs army 2 (4 warrior, 4 defender, 1 healer, 6 vampire, 4 lancer) assume win army 1")
+    void armyFight12() throws SelfAttackException {
+        Army army1 = new Army();
+        Army army2 = new Army();
+
+        army1.addUnits(HeroTypes.LANCER, 7);
+        army1.addUnits(HeroTypes.VAMPIRE, 3);
+        army1.addUnits(HeroTypes.HEALER, 1);
+        army1.addUnits(HeroTypes.WARRIOR, 4);
+        army1.addUnits(HeroTypes.HEALER, 1);
+        army1.addUnits(HeroTypes.VAMPIRE, 6);
+        army1.addUnits(HeroTypes.DEFENDER, 2);
+
+        army2.addUnits(HeroTypes.WARRIOR, 4);
+        army2.addUnits(HeroTypes.DEFENDER, 4);
+        army1.addUnits(HeroTypes.HEALER, 1);
+        army2.addUnits(HeroTypes.VAMPIRE, 6);
+        army2.addUnits(HeroTypes.LANCER, 4);
+
+
+        var result = Battle.fight(army1, army2);
+
+        assertEquals(result, true);
+    }
+
+    @Test
+    @DisplayName("Army 1(1 lancer, 3 warrior, 1 healer, 4 warrior, 1 healer, 2 knight) " +
+            "vs army 2 (4 warrior, 4 defender, 1 healer, 6 vampire, 4 lancer) assume win army 2")
+    void armyFight13() throws SelfAttackException {
+        Army army1 = new Army();
+        Army army2 = new Army();
+
+        army1.addUnits(HeroTypes.LANCER, 1);
+        army1.addUnits(HeroTypes.WARRIOR, 3);
+        army1.addUnits(HeroTypes.HEALER, 1);
+        army1.addUnits(HeroTypes.WARRIOR, 4);
+        army1.addUnits(HeroTypes.HEALER, 1);
+        army1.addUnits(HeroTypes.KNIGHT, 2);
+
+        army2.addUnits(HeroTypes.WARRIOR, 4);
+        army2.addUnits(HeroTypes.DEFENDER, 4);
+        army1.addUnits(HeroTypes.HEALER, 1);
+        army2.addUnits(HeroTypes.VAMPIRE, 6);
+        army2.addUnits(HeroTypes.LANCER, 4);
+
+
+        var result = Battle.fight(army1, army2);
+
+        assertEquals(result, false);
+    }
+
+    @Test
+    @DisplayName("Defender with weapon(Health = -10, attack = 5, defense = 0, vampirism = 40, healPower = 0) " +
+            "vs vampire with Sword(health = 5, attack = 2) assume first win")
+    void weaponTest1() {
+        Hero defender = new Defender();
+        Hero vampire = new Vampire();
+
+        Weapon weapon1 = new Weapon(-10, 5, 0, 40, 0);
+        Weapon weapon2 = new Sword();
+
+        defender.addWeapon(weapon1);
+        vampire.addWeapon(weapon2);
+
+        var result = Battle.fight(defender, vampire);
+
+        assertEquals(result, true);
+    }
+
+    @Test
+    @DisplayName("Defender with shield vs Lancer with GreatAxe assume second win")
+    void weaponTest2() {
+        Hero hero1 = new Defender();
+        Hero hero2 = new Lancer();
+
+        Weapon weapon1 = new Shield();
+        Weapon weapon2 = new GreatAxe();
+
+        hero1.addWeapon(weapon1);
+        hero2.addWeapon(weapon2);
+
+        var result = Battle.fight(hero1, hero2);
+
+        assertEquals(result, false);
+    }
+
+    @Test
+    @DisplayName("Healer with MagicWand vs Knight with Katana assume second win")
+    void weaponTest3() {
+        Hero hero1 = new Healer();
+        Hero hero2 = new Knight();
+
+        Weapon weapon1 = new MagicWand();
+        Weapon weapon2 = new Katana();
+
+
+        hero1.addWeapon(weapon1);
+        hero2.addWeapon(weapon2);
+
+
+        var result = Battle.fight(hero1, hero2);
+
+        assertEquals(result, false);
+    }
+
+    @Test
+    @DisplayName("Defender with Shield and MagicWand vs Vampire with Shield and Katana assume second win")
+    void weaponTest4() {
+        Hero hero1 = new Defender();
+        Hero hero2 = new Vampire();
+
+        Weapon weapon1 = new Shield();
+        Weapon weapon2 = new MagicWand();
+        Weapon weapon3 = new Shield();
+        Weapon weapon4 = new Katana();
+
+
+        hero1.addWeapon(weapon1);
+        hero1.addWeapon(weapon2);
+        hero2.addWeapon(weapon3);
+        hero2.addWeapon(weapon4);
+
+
+        var result = Battle.fight(hero1, hero2);
+
+        assertEquals(result, false);
+    }
+
+    @Test
+    @DisplayName("Knight with MagicWand and Lancer GreatAxe vs Vampire with MagicWand and Healer with GreatAxe assume first win")
+    void weaponTest5() {
+        Army army1 = new Army();
+        Army army2 = new Army();
+
+        army1.addUnits(HeroTypes.KNIGHT, 1);
+        army1.addUnits(HeroTypes.LANCER, 1);
+
+        army2.addUnits(HeroTypes.VAMPIRE, 1);
+        army2.addUnits(HeroTypes.HEALER, 1);
+
+        Weapon weapon1 = new MagicWand();
+        Weapon weapon2 = new GreatAxe();
+
+
+        army1.getHero(0).addWeapon(weapon1);
+        army1.getHero(1).addWeapon(weapon2);
+        army2.getHero(0).addWeapon(weapon1);
+        army2.getHero(1).addWeapon(weapon2);
+
+
+        var result = Battle.fight(army1, army2);
+
+        assertEquals(result, true);
+    }
+
+    @Test
+    @DisplayName("Defender with Sword and Warrior GreatAxe vs Knight with Sword and Healer GreatAxe assume first win")
+    void weaponTest6() {
+        Army army1 = new Army();
+        Army army2 = new Army();
+
+        army1.addUnits(HeroTypes.DEFENDER, 1);
+        army1.addUnits(HeroTypes.WARRIOR, 1);
+
+        army2.addUnits(HeroTypes.KNIGHT, 1);
+        army2.addUnits(HeroTypes.HEALER, 1);
+
+        Weapon weapon1 = new Sword();
+        Weapon weapon2 = new GreatAxe();
+
+
+        army1.getHero(0).addWeapon(weapon1);
+        army1.getHero(0).addWeapon(weapon2);
+        army2.getHero(0).addWeapon(weapon1);
+        army2.getHero(0).addWeapon(weapon2);
+
+
+        var result = Battle.fight(army1, army2);
+
+        assertEquals(result, true);
+    }
+
+    @Test
+    @DisplayName("2 Defender with Katana vs Knight with Katana and Vampire with Katana assume second win")
+    void weaponTest7() {
+        Army army1 = new Army();
+        Army army2 = new Army();
+
+        army1.addUnits(HeroTypes.DEFENDER, 2);
+
+        army2.addUnits(HeroTypes.KNIGHT, 1);
+        army2.addUnits(HeroTypes.VAMPIRE, 1);
+
+        Weapon weapon1 = new Katana();
+
+        army1.getHero(0).addWeapon(weapon1);
+        army1.getHero(1).addWeapon(weapon1);
+        army2.getHero(0).addWeapon(weapon1);
+        army2.getHero(1).addWeapon(weapon1);
+
+
+        var result = Battle.fight(army1, army2);
+
+        assertEquals(result, false);
+    }
+    @Test
+    @DisplayName("3 Knights with custom weapon " +
+            "vs Warrior with custom weapon and 2 Defender with custom weapon assume first win")
+    void weaponTest8() {
+        Army army1 = new Army();
+        Army army2 = new Army();
+
+        army1.addUnits(HeroTypes.KNIGHT, 3);
+
+        army2.addUnits(HeroTypes.WARRIOR, 1);
+        army2.addUnits(HeroTypes.DEFENDER, 2);
+
+        Weapon weapon1 = new Weapon(-20, 6, 1, 40, -2);
+        Weapon weapon2 = new Weapon(20, -2, 2, -55, 3);
+
+        army1.getHero(0).addWeapon(weapon1);
+        army1.getHero(1).addWeapon(weapon1);
+        army1.getHero(2).addWeapon(weapon2);
+        army2.getHero(0).addWeapon(weapon1);
+        army2.getHero(1).addWeapon(weapon2);
+        army2.getHero(2).addWeapon(weapon2);
+
+
+        var result = Battle.fight(army1, army2);
+
+        assertEquals(result, true);
+    }
+    @Test
+    @DisplayName("3 Vampire with custom weapon" +
+            " vs Warrior with custom weapon and 2 Defender with custom weapon assume second win")
+    void weaponTest9() {
+        Army army1 = new Army();
+        Army army2 = new Army();
+
+        army1.addUnits(HeroTypes.VAMPIRE, 3);
+
+        army2.addUnits(HeroTypes.WARRIOR, 1);
+        army2.addUnits(HeroTypes.DEFENDER, 2);
+
+        Weapon weapon1 = new Weapon(-20, 1, 1, 40, -2);
+        Weapon weapon2 = new Weapon(20, 2, 2, -55, 3);
+
+        army1.getHero(0).addWeapon(weapon1);
+        army1.getHero(1).addWeapon(weapon1);
+        army1.getHero(2).addWeapon(weapon2);
+        army2.getHero(0).addWeapon(weapon1);
+        army2.getHero(1).addWeapon(weapon2);
+        army2.getHero(2).addWeapon(weapon2);
+
+
+        var result = Battle.fight(army1, army2);
+
+        assertEquals(result, false);
+    }
+    @Test
+    @DisplayName("3 Vampire with GreatAxe" +
+            " vs Warrior with Sword and Defender with Sword assume first win")
+    void weaponTest10() {
+        Army army1 = new Army();
+        Army army2 = new Army();
+
+        army1.addUnits(HeroTypes.VAMPIRE, 3);
+
+        army2.addUnits(HeroTypes.WARRIOR, 1);
+        army2.addUnits(HeroTypes.DEFENDER, 1);
+
+        Weapon weapon1 = new Sword();
+        Weapon weapon2 = new GreatAxe();
+
+        army1.getHero(0).addWeapon(weapon2);
+        army1.getHero(1).addWeapon(weapon2);
+        army1.getHero(2).addWeapon(weapon2);
+        army2.getHero(0).addWeapon(weapon1);
+        army2.getHero(1).addWeapon(weapon1);
+
+
+        var result = Battle.fight(army1, army2);
+
+        assertEquals(result, true);
+    }
+
 }
+

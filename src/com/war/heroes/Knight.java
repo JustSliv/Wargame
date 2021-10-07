@@ -7,4 +7,15 @@ public class Knight extends Hero {
         maxHealth = 50;
         attack = 7;
     }
+
+    @Override
+    public String toString() {
+        return "Knight{" +
+                "health=" + health +
+                ", attack=" + attack +
+                ", defence=" + defence +
+                ", maxHealth=" + maxHealth +
+                ", isAlive=" + isAlive +
+                '}';
+    }
 }

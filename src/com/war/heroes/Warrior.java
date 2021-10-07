@@ -8,4 +8,14 @@ public class Warrior extends Hero {
         attack = 5;
     }
 
+    @Override
+    public String toString() {
+        return "Warrior{" +
+                "health=" + health +
+                ", attack=" + attack +
+                ", defence=" + defence +
+                ", maxHealth=" + maxHealth +
+                ", isAlive=" + isAlive +
+                '}';
+    }
 }

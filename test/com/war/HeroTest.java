@@ -3,6 +3,7 @@ package com.war;
 import com.war.exceptions.SelfAttackException;
 import com.war.heroes.Hero;
 import com.war.heroes.Knight;
+import com.war.heroes.Vampire;
 import com.war.heroes.Warrior;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,28 +13,28 @@ import static org.junit.jupiter.api.Assertions.*;
 class HeroTest {
 
     @Test
-    @DisplayName("Warrior attack knight one time assume knight has 45 health")
+    @DisplayName("Warrior attack knight one time assume knight take 5 damage")
     void doAttack() throws SelfAttackException {
         Hero warrior = new Warrior();
         Hero enemy = new Knight();
 
         var result = warrior.doAttack(enemy);
 
-        assertEquals(result, 45);
+        assertEquals(result, 5);
     }
 
     @Test
-    @DisplayName("Warrior attack warrior three times assume knight has 35 health")
+    @DisplayName("Warrior attack warrior three times assume knight take 5 damage")
     void doAttack2() throws SelfAttackException {
         Hero warrior = new Warrior();
-        Hero enemy = new Knight();
+        Hero enemy = new Warrior();
         int result = 0;
 
         for (int i = 0; i < 3; i++) {
-             result = warrior.doAttack(enemy);
+            result = warrior.doAttack(enemy);
         }
 
-        assertEquals(result, 35);
+        assertEquals(result, 5);
     }
 
     @Test
@@ -79,5 +80,27 @@ class HeroTest {
 
         assertFalse(result);
     }
+
+    @Test
+    @DisplayName("Vampirism not on full health")
+    void vampirismTest() throws SelfAttackException {
+        Hero vampire = new Vampire();
+
+        var result = ((Vampire) vampire).healWithVampirism(4);
+
+        assertEquals(result, 2);
+    }
+
+    @Test
+    @DisplayName("Vampirism on full health")
+    void vampirismTest2() {
+        Hero vampire = new Vampire();
+
+        var result = ((Vampire) vampire).healWithVampirism(4);
+
+        assertEquals(result, 2);
+    }
+
+
 
 }
